@@ -296,57 +296,57 @@ export default function CitizenImpactView() {
       case "student":
         return {
           primary: "bg-blue-600 hover:bg-blue-700",
-          text: "text-blue-400",
-          bgLight: "bg-blue-950/40",
-          border: "border-blue-900/40",
+          text: "text-blue-700",
+          bgLight: "bg-blue-50",
+          border: "border-blue-200",
           accentLine: "bg-blue-500"
         };
       case "parent":
         return {
           primary: "bg-emerald-600 hover:bg-emerald-700",
-          text: "text-emerald-400",
-          bgLight: "bg-emerald-950/40",
-          border: "border-emerald-900/40",
+          text: "text-emerald-700",
+          bgLight: "bg-emerald-50",
+          border: "border-emerald-200",
           accentLine: "bg-emerald-500"
         };
       case "worker":
         return {
           primary: "bg-indigo-600 hover:bg-indigo-700",
-          text: "text-indigo-400",
-          bgLight: "bg-indigo-950/40",
-          border: "border-indigo-900/40",
+          text: "text-indigo-700",
+          bgLight: "bg-indigo-50",
+          border: "border-indigo-200",
           accentLine: "bg-indigo-500"
         };
       case "pensioner":
         return {
           primary: "bg-rose-600 hover:bg-rose-700",
-          text: "text-rose-400",
-          bgLight: "bg-rose-950/40",
-          border: "border-rose-900/40",
+          text: "text-rose-700",
+          bgLight: "bg-rose-50",
+          border: "border-rose-200",
           accentLine: "bg-rose-500"
         };
       case "sme":
         return {
           primary: "bg-amber-600 hover:bg-amber-700",
-          text: "text-amber-400",
-          bgLight: "bg-amber-950/40",
-          border: "border-amber-900/40",
+          text: "text-amber-700",
+          bgLight: "bg-amber-50",
+          border: "border-amber-200",
           accentLine: "bg-amber-500"
         };
       case "vulnerable":
         return {
           primary: "bg-teal-600 hover:bg-teal-700",
-          text: "text-teal-400",
-          bgLight: "bg-teal-950/40",
-          border: "border-teal-900/40",
+          text: "text-teal-700",
+          bgLight: "bg-teal-50",
+          border: "border-teal-200",
           accentLine: "bg-teal-500"
         };
       default:
         return {
           primary: "bg-blue-600 hover:bg-blue-700",
-          text: "text-blue-400",
-          bgLight: "bg-blue-950/40",
-          border: "border-blue-900/40",
+          text: "text-blue-700",
+          bgLight: "bg-blue-50",
+          border: "border-blue-200",
           accentLine: "bg-blue-500"
         };
     }
@@ -383,13 +383,13 @@ export default function CitizenImpactView() {
     <div className="flex flex-col gap-10">
       {/* Hero / Profile Selector */}
       <section className="flex flex-col items-center text-center gap-3">
-        <span className="text-[10px] uppercase tracking-[0.25em] text-slate-500 font-bold block">
+        <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400 font-bold block">
           Section 04 / Demographics Focus
         </span>
-        <h1 className="text-2xl md:text-3xl font-serif font-black text-white">
+        <h1 className="text-2xl md:text-3xl font-serif font-black text-slate-900">
           Discover Your Budget Impact
         </h1>
-        <p className="text-xs md:text-sm text-slate-400 max-w-2xl leading-relaxed font-medium">
+        <p className="text-xs md:text-sm text-slate-600 max-w-2xl leading-relaxed font-medium">
           Select your citizen profile below to see a customized checklist of measures, savings, and direct benefits allocated for your demographic.
         </p>
 
@@ -405,7 +405,7 @@ export default function CitizenImpactView() {
                   className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs ${
                     isActive 
                       ? `${pColors.primary} text-white scale-102` 
-                      : "bg-slate-900 text-slate-300 border border-slate-800/80 hover:bg-slate-850 hover:border-slate-700"
+                      : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:border-slate-400"
                   }`}
                 >
                   {renderIcon(p.iconName, "w-4 h-4 shrink-0")}
@@ -431,12 +431,12 @@ export default function CitizenImpactView() {
             {/* Left: Measures List */}
             <div className="flex-1 flex flex-col gap-6">
               <div>
-                <span className="text-[9px] font-mono text-slate-500 font-bold uppercase block mb-1">PROVISION SET</span>
-                <h3 className="text-lg md:text-xl font-serif font-black text-white flex items-center gap-2">
+                <span className="text-[9px] font-mono text-slate-400 font-bold uppercase block mb-1">PROVISION SET</span>
+                <h3 className="text-lg md:text-xl font-serif font-black text-slate-900 flex items-center gap-2">
                   {activeProfile.title}
                   <Sparkles className={`w-4 h-4 ${activeColors.text}`} />
                 </h3>
-                <p className="text-xs text-slate-500 font-medium">
+                <p className="text-xs text-slate-500">
                   Targeted legislative measures and public investments structured for this category.
                 </p>
               </div>
@@ -447,7 +447,7 @@ export default function CitizenImpactView() {
                   <motion.div 
                     key={m.title}
                     whileHover={{ y: -3 }}
-                    className="bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-2xl flex flex-col justify-between group hover:border-slate-700 transition-all relative overflow-hidden shadow-2xs"
+                    className="bg-white border border-slate-200 p-6 md:p-8 rounded-2xl flex flex-col justify-between group hover:border-slate-300 transition-all relative overflow-hidden shadow-2xs"
                   >
                     <div className={`absolute top-0 left-0 w-full h-1 ${activeColors.accentLine}`}></div>
                     <div>
@@ -455,21 +455,21 @@ export default function CitizenImpactView() {
                         <span className={`px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded-full ${activeColors.bgLight} ${activeColors.text}`}>
                           {m.category}
                         </span>
-                        <div className="text-slate-500">
+                        <div className="text-slate-400">
                           {renderIcon(m.iconName, "w-4.5 h-4.5")}
                         </div>
                       </div>
-                      <h4 className="text-base font-serif font-black text-white mb-2 leading-snug">
+                      <h4 className="text-base font-serif font-black text-slate-900 mb-2 leading-snug">
                         {m.title}
                       </h4>
                     </div>
-                    <div className="mt-6 pt-4 border-t border-slate-850">
+                    <div className="mt-6 pt-4 border-t border-slate-100">
                       {m.value && (
                         <div className={`text-2xl md:text-3xl font-mono font-bold ${activeColors.text} mb-2`}>
                           {m.value}
                         </div>
                       )}
-                      <p className="text-xs text-slate-450 leading-relaxed font-medium">
+                      <p className="text-xs text-slate-600 leading-relaxed">
                         {m.description}
                       </p>
                     </div>
@@ -480,7 +480,7 @@ export default function CitizenImpactView() {
                 {activeProfile.measures[2] && (
                   <motion.div 
                     whileHover={{ y: -3 }}
-                    className="col-span-1 md:col-span-2 bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-2xl hover:border-slate-700 transition-all flex flex-col md:flex-row items-center gap-6 shadow-2xs relative overflow-hidden"
+                    className="col-span-1 md:col-span-2 bg-white border border-slate-200 p-6 md:p-8 rounded-2xl hover:border-slate-300 transition-all flex flex-col md:flex-row items-center gap-6 shadow-2xs relative overflow-hidden"
                   >
                     <div className={`absolute top-0 left-0 w-full h-1 ${activeColors.accentLine}`}></div>
                     
@@ -491,15 +491,15 @@ export default function CitizenImpactView() {
                       <span className={`px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded-full inline-block mb-1.5 ${activeColors.bgLight} ${activeColors.text}`}>
                         {activeProfile.measures[2].category}
                       </span>
-                      <h4 className="text-base font-serif font-black text-white mb-1 leading-snug">
+                      <h4 className="text-base font-serif font-black text-slate-900 mb-1 leading-snug">
                         {activeProfile.measures[2].title}
                       </h4>
-                      <p className="text-xs text-slate-400 leading-relaxed font-medium">
+                      <p className="text-xs text-slate-600 leading-relaxed">
                         {activeProfile.measures[2].description}
                       </p>
                     </div>
                     {activeProfile.measures[2].value && (
-                      <div className={`md:ml-auto text-2xl md:text-3xl font-mono font-bold ${activeColors.text} shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-850 w-full md:w-auto text-center md:text-right`}>
+                      <div className={`md:ml-auto text-2xl md:text-3xl font-mono font-bold ${activeColors.text} shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 w-full md:w-auto text-center md:text-right`}>
                         {activeProfile.measures[2].value}
                       </div>
                     )}

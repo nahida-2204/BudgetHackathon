@@ -1,26 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Public+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Plus Jakarta Sans", Georgia, Cambria, "Times New Roman", Times, serif;
+/* Switch dark mode from prefers-color-scheme media query to .dark class — we never add .dark so dark: variants are permanently disabled */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, Cambria, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  
+}
+
+:root {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, Cambria, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
   --color-primary: #2563EB;
   --color-primary-container: #DBEAFE;
   --color-on-primary-container: #1E40AF;
   --color-secondary: #10B981;
   --color-tertiary: #F59E0B;
   --color-tertiary-container: #FEF3C7;
+
+  --mu-red: #EA4335;
+  --mu-blue: #4285F4;
+  --mu-yellow: #FBBC05;
+  --mu-green: #34A853;
 }
 
-/* Custom Public-Friendly Styling overrides */
+/* Force light mode — dark: variants must not activate regardless of OS setting */
+:root {
+  color-scheme: light;
+}
+
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-family: var(--font-sans);
 }
 
-/* Redefined double border style to be soft and modern for the public */
 .editorial-double-border {
   border-top: 2px dashed rgba(37, 99, 235, 0.15);
   border-bottom: 2px dashed rgba(37, 99, 235, 0.15);
@@ -36,7 +54,7 @@ body {
 
 .editorial-title-xl {
   font-family: var(--font-serif);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
