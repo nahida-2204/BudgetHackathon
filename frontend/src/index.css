@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Public+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Plus Jakarta Sans", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-primary: #2563EB;
+  --color-primary-container: #DBEAFE;
+  --color-on-primary-container: #1E40AF;
+  --color-secondary: #10B981;
+  --color-tertiary: #F59E0B;
+  --color-tertiary-container: #FEF3C7;
+}
+
+/* Custom Public-Friendly Styling overrides */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Redefined double border style to be soft and modern for the public */
+.editorial-double-border {
+  border-top: 2px dashed rgba(37, 99, 235, 0.15);
+  border-bottom: 2px dashed rgba(37, 99, 235, 0.15);
+}
+
+.editorial-tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.editorial-title-xl {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}

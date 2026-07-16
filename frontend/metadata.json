@@ -1,0 +1,6 @@
+{
+  "name": "Smart Budget Moris",
+  "description": "An interactive national budget transparency portal for Mauritius with spending breakdown, tax transparency, citizen impact personalizations, and an AI simplifier.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

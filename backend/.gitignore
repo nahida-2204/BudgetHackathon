@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Env
+.env
+.env.*
+
+# FastAPI / Uvicorn
+*.log
+
+# RAG
+*.faiss
+*.index
+chroma/
+vectorstore/
+embeddings/
+*.pkl
+*.bin
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Misc
+.DS_Store
+.idea/
+.vscode/
