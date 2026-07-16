@@ -36,6 +36,17 @@ export interface ExpenditureCategory {
   color: string;
 }
 
+export interface BudgetMeasure {
+  title: string;
+  description: string;
+}
+
+export interface KeyMeasureCard {
+  id: string;
+  sector: string;
+  measures: BudgetMeasure[];
+}
+
 export interface ChatMessage {
   id: string;
   type: 'user' | 'assistant';

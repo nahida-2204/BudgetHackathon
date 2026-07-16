@@ -142,20 +142,35 @@ Use the requested JSON schema. Do not include any formatting or other text.`;
 // Proxy FastAPI spendings through the React/Express server
 app.get("/api/spendings", async (_req: Request, res: Response) => {
   try {
-    const backendResponse = await fetch(
-      "http://127.0.0.1:8000/api/spendings"
-    );
-
-    const data = await backendResponse.json();
-
-    res.status(backendResponse.status).json(data);
+    const backendResponse = await fetch("http://127.0.0.1:8000/api/spendings");
+    res.status(backendResponse.status).json(await backendResponse.json());
   } catch (error) {
     console.error("FastAPI spendings proxy error:", error);
+    res.status(502).json({ error: "Could not connect to the FastAPI backend." });
+  }
+});
 
-    res.status(502).json({
-      error: "Could not connect to the FastAPI backend.",
-      detail: "Make sure FastAPI is running at http://127.0.0.1:8000",
+app.get("/api/measures", async (_req: Request, res: Response) => {
+  try {
+    const r = await fetch("http://127.0.0.1:8000/api/measures");
+    res.status(r.status).json(await r.json());
+  } catch (error) {
+    console.error("FastAPI measures proxy error:", error);
+    res.status(502).json({ error: "Could not connect to the FastAPI backend." });
+  }
+});
+
+app.post("/api/chat", async (req: Request, res: Response) => {
+  try {
+    const r = await fetch("http://127.0.0.1:8000/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(req.body)
     });
+    res.status(r.status).json(await r.json());
+  } catch (error) {
+    console.error("FastAPI chat proxy error:", error);
+    res.status(502).json({ error: "Could not connect to the FastAPI backend." });
   }
 });
 // Configure Vite integration for dev, static serving for prod
