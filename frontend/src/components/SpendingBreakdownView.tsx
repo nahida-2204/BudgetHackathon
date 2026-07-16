@@ -291,12 +291,12 @@ export default function SpendingBreakdownView() {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {breakdownData.map((d) => (
-            <div key={d.name} className="flex flex-col gap-3 bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div key={d.name} className="flex flex-col gap-3 bg-white border border-slate-200 rounded-xl p-4 shadow-xs">
               <div className="flex items-center gap-2">
                 <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${d.color}`} />
-                <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">{d.name}</span>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">{d.name}</span>
               </div>
-              <span className="text-3xl font-mono font-bold text-white">Rs {d.allocationPer1k}</span>
+              <span className="text-3xl font-serif font-black text-slate-900">Rs {d.allocationPer1k}</span>
               <span className="text-[10px] text-slate-500">{d.percentage} of total</span>
             </div>
           ))}
