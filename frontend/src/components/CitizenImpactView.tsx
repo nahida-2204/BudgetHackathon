@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   GraduationCap, 
@@ -16,18 +16,82 @@ import {
   Leaf, 
   Briefcase, 
   CreditCard,
-  CheckCircle2,
-  Users,
   Briefcase as WorkIcon,
   Smile as FamilyIcon,
   Heart as RetiredIcon,
   Store as SmeIcon,
-  Sparkles
+  Sparkles,
+  HandHeart
 } from "lucide-react";
 import { ImpactProfile } from "../types";
 
+// Which API sectors map to each profile
+const PROFILE_SECTORS: Record<string, string[]> = {
+  student:     ["Education", "Technology & AI"],
+  parent:      ["Social Support", "Education"],
+  worker:      ["Social Support", "Infrastructure"],
+  pensioner:   ["Healthcare", "Social Support"],
+  sme:         ["SME & Business", "Environment & Energy"],
+  vulnerable:  ["Social Support"],
+};
+
+// Default icon per sector for API-sourced measures
+const SECTOR_ICON: Record<string, string> = {
+  "Education":            "GraduationCap",
+  "Technology & AI":      "Laptop",
+  "Social Support":       "HandHeart",
+  "Infrastructure":       "Briefcase",
+  "Healthcare":           "HeartPulse",
+  "SME & Business":       "Store",
+  "Environment & Energy": "Leaf",
+};
+
 export default function CitizenImpactView() {
   const [activeProfileId, setActiveProfileId] = useState("student");
+  // Stores API measures keyed by sector name
+  const [sectorMeasures, setSectorMeasures] = useState<Record<string, Array<{ title: string; description: string }>>>({});
+
+  useEffect(() => {
+    fetch("/api/measures")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.status !== "success" || !data.data?.length) return;
+        const map: Record<string, Array<{ title: string; description: string }>> = {};
+        for (const record of data.data) {
+          try {
+            const raw = record.measures_list.replace(/^```json\s*/i, "").replace(/```\s*$/, "").trim();
+            const parsed = JSON.parse(raw);
+            const measures = parsed.sectors?.[0]?.measures ?? [];
+            map[record.sector] = measures;
+          } catch {
+            // skip unparseable records
+          }
+        }
+        setSectorMeasures(map);
+      })
+      .catch(() => { /* silent fallback to hardcoded */ });
+  }, []);
+
+  // Build up to 3 measures for a profile from API data; returns null if no data yet
+  const getApiMeasures = (profileId: string): ImpactProfile["measures"] | null => {
+    const sectors = PROFILE_SECTORS[profileId] ?? [];
+    const collected: ImpactProfile["measures"] = [];
+    for (const sector of sectors) {
+      const items = sectorMeasures[sector] ?? [];
+      for (const m of items) {
+        if (collected.length >= 3) break;
+        collected.push({
+          category: sector,
+          title: m.title,
+          value: "",
+          description: m.description,
+          iconName: SECTOR_ICON[sector] ?? "GraduationCap",
+        });
+      }
+      if (collected.length >= 3) break;
+    }
+    return collected.length > 0 ? collected : null;
+  };
 
   const profiles: ImpactProfile[] = [
     {
@@ -209,10 +273,22 @@ export default function CitizenImpactView() {
         "Reduced tax rates allowing higher capital reinvestment.",
         "Cheap working capital to safeguard business cashflows."
       ]
+    },
+    {
+      id: "vulnerable",
+      name: "Vulnerable Communities",
+      iconName: "HandHeart",
+      title: "Key Measures for Vulnerable Communities",
+      benefitAmount: "",
+      benefitSubtitle: "",
+      measures: [],
+      bullets: []
     }
   ];
 
-  const activeProfile = profiles.find((p) => p.id === activeProfileId) || profiles[0];
+  const baseProfile = profiles.find((p) => p.id === activeProfileId) || profiles[0];
+  const apiMeasures = getApiMeasures(activeProfileId);
+  const activeProfile = apiMeasures ? { ...baseProfile, measures: apiMeasures } : baseProfile;
 
   // Accent Color Mapping - Streamlined for Premium Dark Theme
   const getColorClasses = (id: string) => {
@@ -257,6 +333,14 @@ export default function CitizenImpactView() {
           border: "border-amber-900/40",
           accentLine: "bg-amber-500"
         };
+      case "vulnerable":
+        return {
+          primary: "bg-teal-600 hover:bg-teal-700",
+          text: "text-teal-400",
+          bgLight: "bg-teal-950/40",
+          border: "border-teal-900/40",
+          accentLine: "bg-teal-500"
+        };
       default:
         return {
           primary: "bg-blue-600 hover:bg-blue-700",
@@ -290,6 +374,7 @@ export default function CitizenImpactView() {
       case "WorkIcon": return <WorkIcon className={className} />;
       case "RetiredIcon": return <RetiredIcon className={className} />;
       case "SmeIcon": return <SmeIcon className={className} />;
+      case "HandHeart": return <HandHeart className={className} />;
       default: return <GraduationCap className={className} />;
     }
   };
@@ -379,9 +464,11 @@ export default function CitizenImpactView() {
                       </h4>
                     </div>
                     <div className="mt-6 pt-4 border-t border-slate-850">
-                      <div className={`text-2xl md:text-3xl font-mono font-bold ${activeColors.text} mb-2`}>
-                        {m.value}
-                      </div>
+                      {m.value && (
+                        <div className={`text-2xl md:text-3xl font-mono font-bold ${activeColors.text} mb-2`}>
+                          {m.value}
+                        </div>
+                      )}
                       <p className="text-xs text-slate-450 leading-relaxed font-medium">
                         {m.description}
                       </p>
@@ -411,52 +498,16 @@ export default function CitizenImpactView() {
                         {activeProfile.measures[2].description}
                       </p>
                     </div>
-                    <div className={`md:ml-auto text-2xl md:text-3xl font-mono font-bold ${activeColors.text} shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-850 w-full md:w-auto text-center md:text-right`}>
-                      {activeProfile.measures[2].value}
-                    </div>
+                    {activeProfile.measures[2].value && (
+                      <div className={`md:ml-auto text-2xl md:text-3xl font-mono font-bold ${activeColors.text} shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-850 w-full md:w-auto text-center md:text-right`}>
+                        {activeProfile.measures[2].value}
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </div>
             </div>
 
-            {/* Right: Impact Summary Card */}
-            <div className="w-full lg:w-1/3 flex flex-col shrink-0">
-              <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-6 md:p-8 flex flex-col h-full rounded-2xl justify-between shadow-lg border border-slate-800 relative overflow-hidden">
-                
-                {/* Minimalist colorful corner accent */}
-                <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-20 ${activeColors.accentLine}`}></div>
-
-                <div className="flex flex-col gap-5 flex-grow relative z-10">
-                  <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
-                    <div className="p-2 bg-white/10 rounded-xl text-blue-400">
-                      <Users className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="text-base md:text-lg font-serif font-black">How It Affects You</h3>
-                  </div>
-
-                  <div className="space-y-6 flex-grow">
-                    <div>
-                      <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">Estimated Annual Benefit</p>
-                      <div className="text-3xl md:text-4xl font-mono font-bold tracking-tight text-emerald-400">{activeProfile.benefitAmount}</div>
-                      <p className="text-xs text-slate-400 mt-2 leading-relaxed font-medium">
-                        {activeProfile.benefitSubtitle}
-                      </p>
-                    </div>
-
-                    <hr className="border-slate-800" />
-
-                    <ul className="space-y-4.5 text-xs font-medium">
-                      {activeProfile.bullets.map((b, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                          <span className="text-slate-300 leading-relaxed">{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
           </motion.section>
         </AnimatePresence>
       </div>
